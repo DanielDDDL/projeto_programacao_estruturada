@@ -141,6 +141,7 @@
    <files xsi:type="projectFileStore">
       <filetype type="cobol" xsi:type="cobolFileContainer">
          <file compile="true" path="MENU_INICIAL.cbl" xsi:type="cobolFile"/>
+         <file compile="true" path="INCLUSAO.cbl" xsi:type="cobolFile"/>
       </filetype>
       <filetype type="cobol.copybook" xsi:type="cobolFileContainer"/>
    </files>
