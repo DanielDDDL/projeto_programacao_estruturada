@@ -18,7 +18,7 @@
 			<os family="unix"/>
 		</condition>
 		<property name="failOnError" value="false"/>
-		<property name="cobolFailOnError" value="true"/>
+		<property name="cobolFailOnError" value="${failOnError}"/>
 		<property name="cobollinkFailOnError" value="${failOnError}"/>
 	</target>
 	<target name="os.init.windows" if="windows">
@@ -75,24 +75,30 @@
 	<mfdirlist id="dirset.New_Configuration.C:\Temp\projeto_programacao_estruturada\MackBooks\MENU_INICIAL.cbl" refid="cobol_directive_set_1"/>
 	<mffilelist refid="cobol.copybook.locations"/>
 	<target name="FileCompile.New_Configuration.C:\Temp\projeto_programacao_estruturada\MackBooks\MENU_INICIAL.cbl" depends="init">
-		<cobol debug="true" destdir="${basedir}/New_Configuration.bin" is64bit="false" failonerror="${cobolFailOnError}" forceCompile="${forceCompile}" desttype="obj" threadedRts="true">
+		<cobol debug="true" destdir="${basedir}/New_Configuration.bin" is64bit="true" failonerror="${cobolFailOnError}" forceCompile="${forceCompile}" desttype="obj" threadedRts="true">
 			<mffilelist refid="cobol.copybook.locations"/>
 			<mfdirlist refid="dirset.New_Configuration.${filename}"/>
 			<mffilelist type="srcfile" srcdir="${basedir}">
 				<file name="${filename}"/>
 			</mffilelist>
 		</cobol>
+		<basename property="basename" file="${filename}" suffix="cbl"/>
+		<cobollink debug="true" destfile="${basename}" objectfile="${basename}${objext}" entrypoint="" sharedRts="true" destdir="${basedir}/New_Configuration.bin" is64bit="true" objectdir="${basedir}/New_Configuration.bin" failonerror="${cobollinkFailOnError}" desttype="dll/cso" threadedRts="true">
+		</cobollink>
 	</target>
 	<mfdirlist id="dirset.New_Configuration.C:\Temp\projeto_programacao_estruturada\MackBooks\INCLUSAO.cbl" refid="cobol_directive_set_1"/>
 	<mffilelist refid="cobol.copybook.locations"/>
 	<target name="FileCompile.New_Configuration.C:\Temp\projeto_programacao_estruturada\MackBooks\INCLUSAO.cbl" depends="init">
-		<cobol debug="true" destdir="${basedir}/New_Configuration.bin" is64bit="false" failonerror="${cobolFailOnError}" forceCompile="${forceCompile}" desttype="obj" threadedRts="true">
+		<cobol debug="true" destdir="${basedir}/New_Configuration.bin" is64bit="true" failonerror="${cobolFailOnError}" forceCompile="${forceCompile}" desttype="obj" threadedRts="true">
 			<mffilelist refid="cobol.copybook.locations"/>
 			<mfdirlist refid="dirset.New_Configuration.${filename}"/>
 			<mffilelist type="srcfile" srcdir="${basedir}">
 				<file name="${filename}"/>
 			</mffilelist>
 		</cobol>
+		<basename property="basename" file="${filename}" suffix="cbl"/>
+		<cobollink debug="true" destfile="${basename}" objectfile="${basename}${objext}" entrypoint="" sharedRts="true" destdir="${basedir}/New_Configuration.bin" is64bit="true" objectdir="${basedir}/New_Configuration.bin" failonerror="${cobollinkFailOnError}" desttype="dll/cso" threadedRts="true">
+		</cobollink>
 	</target>
 	<!--  ****************  -->
 	<!--  * Object files *  -->
@@ -107,13 +113,14 @@
 	<!--  *************************  -->
 	<!-- cfg.New_Configuration -->
 	<target name="cobol.cfg.New_Configuration" depends="init">
-		<cobol debug="true" destdir="${basedir}/New_Configuration.bin" is64bit="false" failonerror="${cobolFailOnError}" forceCompile="${forceCompile}" desttype="obj" threadedRts="true">
+		<cobol debug="true" destdir="${basedir}/New_Configuration.bin" is64bit="true" failonerror="${cobolFailOnError}" forceCompile="${forceCompile}" desttype="obj" threadedRts="true">
 			<mffilelist refid="cobol.copybook.locations"/>
 			<mfdirlist refid="cobol_directive_set_1"/>
 			<mffilelist refid="cobol_file_set_1"/>
 		</cobol>
-		<cobollink debug="true" destfile="MackBooks" entrypoint="" sharedRts="true" destdir="${basedir}/New_Configuration.bin" is64bit="false" failonerror="${cobollinkFailOnError}" desttype="exe" threadedRts="true">
-			<mffilelist refid="cobol.default.object.files"/>
+		<cobollink debug="true" destfile="MENU_INICIAL" objectfile="MENU_INICIAL${objext}" entrypoint="" sharedRts="true" destdir="${basedir}/New_Configuration.bin" is64bit="true" objectdir="${basedir}/New_Configuration.bin" failonerror="${cobollinkFailOnError}" desttype="dll/cso" threadedRts="true">
+		</cobollink>
+		<cobollink debug="true" destfile="INCLUSAO" objectfile="INCLUSAO${objext}" entrypoint="" sharedRts="true" destdir="${basedir}/New_Configuration.bin" is64bit="true" objectdir="${basedir}/New_Configuration.bin" failonerror="${cobollinkFailOnError}" desttype="dll/cso" threadedRts="true">
 		</cobollink>
 	</target>
 	<target name="New_Configuration.FileCompile" depends="init">
@@ -137,13 +144,8 @@
 	<target name="post.build.cfg.New_Configuration" depends="init">
 	</target>
 	<target name="clean.cfg.New_Configuration" depends="init">
-		<cobolclean debug="true" destdir="${basedir}/New_Configuration.bin" desttype="exe">
+		<cobolclean debug="true" destdir="${basedir}/New_Configuration.bin" desttype="dll">
 			<mffilelist refid="cobol_file_set_1"/>
-		</cobolclean>
-		<cobolclean destdir="${basedir}/New_Configuration.bin" desttype="exe">
-			<mffilelist>
-				<file name="MackBooks"/>
-			</mffilelist>
 		</cobolclean>
 	</target>
 	<!--  *******************  -->

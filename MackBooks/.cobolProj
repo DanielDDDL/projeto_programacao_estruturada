@@ -8,7 +8,7 @@
          <path enabled="true" name="/MackBooks" type="mfpath"/>
       </build-precedence-paths>
       <configurations default="New Configuration" xsi:type="buildConfigurationsContainer">
-         <configuration description="New Configuration" type="single_exe" is64bit="false" createlbr="false" platform="Windows" xsi:type="cobolBuildConfiguration">
+         <configuration description="New Configuration" type="all_dll" is64bit="true" createlbr="false" platform="Windows" xsi:type="cobolBuildConfiguration">
             <targetdir name="New Configuration.bin"/>
             <link_settings xsi:type="linkSettings">
                <additional_options value=""/>
@@ -22,11 +22,19 @@
                <additional_files/>
                <rcfile path=""/>
                <rts_type value="shared"/>
-               <target name="MackBooks"/>
-               <targettype type="exe"/>
+               <target name=""/>
+               <targettype type="dll/cso"/>
                <threaded_rts value="true"/>
                <verbose value="false"/>
             </link_settings>
+            <application_configuration xsi:type="runtimeConfigurationSettings">
+               <cobol_switches xsi:type="projectCobolSwitches"/>
+               <rts_switches xsi:type="projectRtsSwitches"/>
+               <tunables>
+                  <tunable index="0" name="screen_lines" value="25"/>
+                  <tunable index="0" name="screen_cols" value="80"/>
+               </tunables>
+            </application_configuration>
          </configuration>
       </configurations>
       <cobol_settings xsi:type="cobolSettings">
