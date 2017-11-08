@@ -64,22 +64,29 @@
    	       DISPLAY "ESCOLHA A OPCAO:"     AT 2307.
            
            PERFORM WITH TEST AFTER UNTIL OPC-VALIDA
-           ACCEPT OPC WITH AUTO AT 2325.
-           IF OPC-VALIDA
-               *> LIMPANDO MESANGEM DE ERRO
-               DISPLAY BRANCO
-           ELSE
-               *> MENSAGEM DE ERRO
-               DISPLAY "DIGITE 1, 2, 3, 4 OU 9"
-           END-IF.
+               ACCEPT OPC AT 2325
+               IF OPC-VALIDA
+                   *> LIMPANDO MESANGEM DE ERRO
+                   DISPLAY BRANCO AT 2407
+               ELSE
+                   *> MENSAGEM DE ERRO
+                   DISPLAY "DIGITE 1, 2, 3, 4 OU 9" AT 2407
+               END-IF
+               
+               EVALUATE OPC
+                   WHEN 1
+                       *> CHAMADO DO MODULO DE INCLUSAO
+                       DISPLAY "SOMETHING" AT 1010
+                   WHEN 2
+                       *> CHAMADO DE REMOCAO
+                       DISPLAY "SOMETHING" AT 1010
+                   WHEN 3
+                       *> CHAMADO DE ALTERACAO
+                       DISPLAY "SOMETHING" AT 1010
+                   WHEN 4 
+                       *> CHAMADO DE CONSULTA
+                       DISPLAY "SOMETHING" AT 1010
+               END-EVALUATE
+           END-PERFORM.
            
-           EVALUATE OPC
-               WHEN 1
-                   *> CHAMADO DO MODULO DE INCLUSAO
-               WHEN 2
-                   *> CHAMADO DE REMOCAO
-               WHEN 3
-                   *> CHAMADO DE ALTERACAO
-               WHEN 4 
-                   *> CHAMADO DE CONSULTA
-           END-EVALUATE.
+      . *> FIM DO PROGRAMA PRINCIPAL
