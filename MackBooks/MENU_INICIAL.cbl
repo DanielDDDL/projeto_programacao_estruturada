@@ -27,14 +27,22 @@
        77 BRANCO PIC X(20) VALUE SPACES.
        77 LINHA  PIC X(32) VALUE ALL '='.                       
 
+       SCREEN SECTION.
+        01 CLEAR-SCREEN.
+             05 BLANK SCREEN BACKGROUND-COLOR 0 FOREGROUND-COLOR 0.
+
        PROCEDURE DIVISION.
-       
+            
            PERFORM CABECALHO.
        
            PERFORM MENUPRINCIPAL UNTIL OPC = 9.
            STOP " ".
            STOP RUN.
        
+        INICIO.
+          DISPLAY CLEAR-SCREEN.
+
+
        CABECALHO.
        
            *> DIVISOES
@@ -76,7 +84,7 @@
                EVALUATE OPC
                    WHEN 1
                        *> CHAMADO DO MODULO DE INCLUSAO
-                       DISPLAY "SOMETHING" AT 1010
+                       CALL "INCLUSAO"
                    WHEN 2
                        *> CHAMADO DE REMOCAO
                        DISPLAY "SOMETHING" AT 1010
@@ -88,5 +96,5 @@
                        DISPLAY "SOMETHING" AT 1010
                END-EVALUATE
            END-PERFORM.
-           
+
       . *> FIM DO PROGRAMA PRINCIPAL

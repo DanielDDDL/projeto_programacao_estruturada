@@ -30,22 +30,26 @@
        01	MASCARAS.
             02   COD-ED	PIC ZZ9  VALUE ZEROS.
             02   PRECO-ED    PIC  ZZ.ZZ9,99   VALUE  ZEROS.
-            
+
+      SCREEN SECTION.
+        01 CLEAR-SCREEN.
+             05 BLANK SCREEN BACKGROUND-COLOR 0 FOREGROUND-COLOR 0.
+
        PROCEDURE   DIVISION.
        
        INICIO.
            PERFORM INICIALIZACAO.
            PERFORM PROCESSAMENTO UNTIL W-OPCAO = "N".
            PERFORM FINALIZACAO.
-           STOP RUN.    *>  se for modulo, alterar para EXIT PROGRAM.
+           EXIT PROGRAM.
        
        INICIALIZACAO.
            PERFORM   LIMPAR-VARIAVEIS.
            OPEN  I-O  ARQ-PROD.
-      *
-      *    Se  W-COD-ERRO   retornar codigo 05 significa que
-      *    o arquivo nao existe e portanto esta criando um novo arquivo
-      *
+      *>
+      *>    Se  W-COD-ERRO   retornar codigo 05 significa que
+      *>    o arquivo nao existe e portanto esta criando um novo arquivo
+      *>
        PROCESSAMENTO.
            PERFORM FORMATAR-TELA.
            PERFORM RECEBER-DADOS.
@@ -53,7 +57,7 @@
            PERFORM OPCAO-CONTINUIDADE.
        
        FORMATAR-TELA.
-           DISPLAY  ERASE.
+        DISPLAY CLEAR-SCREEN.
 	       DISPLAY  "INCLUSAO DE PRODUTOS"  AT 0520.
 	       DISPLAY  "CODIGO:"   AT  1010.
            DISPLAY  "DESCRICAO:"   AT  1210.
@@ -99,7 +103,7 @@
        GRAVAR-DADOS.
            PERFORM WITH TEST AFTER UNTIL  *> VALIDA W-INCLUI
                    W-INCLUI = "S" OR "N"
-               ACCEPT W-INCLUI AT  1845 WITH UPPER AUTO
+               ACCEPT W-INCLUI AT  1845
                IF  W-INCLUI NOT = "S" AND "N"
                    DISPLAY "DIGITAR S PARA GRAVAR E N PARA DESITIR"
                            AT 2421
@@ -125,10 +129,9 @@
            DISPLAY "DESEJA INCLUIR OUTRO REGISTRO?(S/N):" AT 2220
            PERFORM WITH TEST AFTER UNTIL
                    W-OPCAO = "S" OR "N"
-               ACCEPT W-OPCAO AT  2265 WITH UPPER AUTO
+               ACCEPT W-OPCAO AT  2265
                IF  W-OPCAO NOT = "S" AND "N"
-                   DISPLAY "DIGITAR S PARA INCLUIR OUTRO REGISTRO E N PA
-      -                    "RA TERMINAR"  AT 2421
+                   DISPLAY "DIGITAR S PARA INCLUIR OUTRO REGISTRO E N PARA TERMINAR"  AT 2421
                ELSE
                    DISPLAY W-BRANCO AT 2421
                END-IF
