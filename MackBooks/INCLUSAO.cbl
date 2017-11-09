@@ -27,7 +27,7 @@
        01  W-OPCAO             PIC X  VALUE SPACE.
        01  W-INCLUI            PIC X  VALUE SPACE.
        01  W-BRANCO            PIC X(50) VALUE SPACE.
-       01	MASCARAS.
+       01	 MASCARAS.
             02   COD-ED	PIC ZZ9  VALUE ZEROS.
             02   PRECO-ED    PIC  ZZ.ZZ9,99   VALUE  ZEROS.
 
@@ -50,6 +50,7 @@
       *>    Se  W-COD-ERRO   retornar codigo 05 significa que
       *>    o arquivo nao existe e portanto esta criando um novo arquivo
       *>
+
        PROCESSAMENTO.
            PERFORM FORMATAR-TELA.
            PERFORM RECEBER-DADOS.
@@ -57,13 +58,13 @@
            PERFORM OPCAO-CONTINUIDADE.
        
        FORMATAR-TELA.
-        DISPLAY CLEAR-SCREEN.
-	       DISPLAY  "INCLUSAO DE PRODUTOS"  AT 0520.
-	       DISPLAY  "CODIGO:"   AT  1010.
-           DISPLAY  "DESCRICAO:"   AT  1210.
-           DISPLAY  "PRECO UNIT.:"   AT  1410.
-           DISPLAY  "CONFIRMA A INCLUSAO?(S/N):"   AT  1810.
-	       DISPLAY  "MENSAGEM: "   AT  2410.
+          DISPLAY CLEAR-SCREEN.
+	        DISPLAY  "INCLUSAO DE PRODUTOS"  AT 0520.
+	        DISPLAY  "CODIGO:"   AT  1010.
+          DISPLAY  "DESCRICAO:"   AT  1210.
+          DISPLAY  "PRECO UNIT.:"   AT  1410.
+          DISPLAY  "CONFIRMA A INCLUSAO?(S/N):"   AT  1810.
+	        DISPLAY  "MENSAGEM: "   AT  2410.
        
        RECEBER-DADOS.
            PERFORM   LIMPAR-VARIAVEIS.
@@ -114,8 +115,7 @@
            IF  W-INCLUI = "S"    
                WRITE  REG-PROD  
                IF W-COD-ERRO NOT = "00"
-                  DISPLAY "REGISTRO DUPLICADO" AT 2421  WITH
-                          FOREGROUND-COLOR 4
+                  DISPLAY "REGISTRO DUPLICADO" AT 2421 WITH FOREGROUND-COLOR 4
                ELSE
                   DISPLAY "                   " AT 2421
                END-IF

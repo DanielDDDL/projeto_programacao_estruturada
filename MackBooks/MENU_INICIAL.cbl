@@ -87,13 +87,13 @@
                        CALL "INCLUSAO"
                    WHEN 2
                        *> CHAMADO DE REMOCAO
-                       DISPLAY "SOMETHING" AT 1010
+                       CALL "EXCLUSAO"
                    WHEN 3
                        *> CHAMADO DE ALTERACAO
-                       DISPLAY "SOMETHING" AT 1010
+                       CALL "ALTERAR"
                    WHEN 4 
                        *> CHAMADO DE CONSULTA
-                       DISPLAY "SOMETHING" AT 1010
+                       CALL "LEITURA"
                END-EVALUATE
            END-PERFORM.
 
