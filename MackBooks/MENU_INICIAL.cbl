@@ -54,7 +54,7 @@
                    DISPLAY BRANCO AT 2407
                ELSE
                    *> MENSAGEM DE ERRO
-                   DISPLAY "DIGITE 1, 2, 3, 4 OU 9" AT 2407
+                   DISPLAY "DIGITE 1, 2, 3, 4 OU 9" AT 2407 
                END-IF
                
                EVALUATE OPC
