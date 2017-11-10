@@ -13,32 +13,31 @@
 
              INPUT-OUTPUT SECTION.
                FILE-CONTROL.
-                   SELECT OPTIONAL ARQ-PROD 
+                   SELECT OPTIONAL ARQ-LIVRO 
                    ASSIGN TO "livros.dat"
                    ORGANIZATION INDEXED
-                   RECORD KEY IS COD-PROD
+                   RECORD KEY IS COD-LIVRO
                    ACCESS RANDOM
                    FILE STATUS IS W-COD-ERRO.
 
        DATA DIVISION.
          FILE SECTION.
-         FD  ARQ-PROD
+         FD  ARQ-LIVRO
              LABEL RECORD STANDARD.
-         01  REG-PROD.
-             02  COD-PROD    PIC 9(3).
-             02  DESCRI-PROD PIC X(20).
-             02  PRECO-PROD  PIC 9(4)V99.
-             02  FILLER      PIC X(41).
+         01  REG-LIVRO.
+             02  COD-LIVRO    PIC 9(3).
+             02  TITULO-LIVRO PIC X(40).
+             02  AUTOR-LIVRO  PIC X(40).
+             02  FILLER       PIC X(41).
 
        
          WORKING-STORAGE SECTION.
-         01  W-COD-ERRO     PIC XX VALUE ALL "=".
-         01  W-OPCAO        PIC X VALUE SPACE.
-         01  W-INCLUI       PIC X VALUE SPACE.
-         01  W-BRANCO       PIC X(50) VALUE SPACE.
+         01  W-COD-ERRO     PIC XX         VALUE SPACES.
+         01  W-OPCAO        PIC X          VALUE SPACES.
+         01  W-INCLUI       PIC X          VALUE SPACES.
+         01  W-BRANCO       PIC X(50)      VALUE SPACES.
          01	 MASCARAS.
-              02   COD-ED	  PIC ZZ9 VALUE ZEROS.
-              02   PRECO-ED PIC  ZZ.ZZ9,99 VALUE ZEROS.
+              02   COD-ED	  PIC ZZ9        VALUE ZEROS.
 
         SCREEN SECTION.
         01 CLEAR-SCREEN.
@@ -54,7 +53,7 @@
        
        INICIALIZACAO.
            PERFORM LIMPAR-VARIAVEIS.
-           OPEN I-O ARQ-PROD.
+           OPEN I-O ARQ-LIVRO.
 
        PROCESSAMENTO.
            PERFORM FORMATAR-TELA.
@@ -67,87 +66,100 @@
           *> LIMPANDO TELA
           DISPLAY CLEAR-SCREEN.
 
-          *> TEXTFIELDS 
-	        DISPLAY  "INCLUSAO DE PRODUTOS"         AT 0520.
-	        DISPLAY  "CODIGO:"                      AT 1010.
-          DISPLAY  "DESCRICAO:"                   AT 1210.
-          DISPLAY  "PRECO UNIT.:"                 AT 1410.
-          DISPLAY  "CONFIRMA A INCLUSAO?(S/N):"   AT 1810.
-	        DISPLAY  "MENSAGEM: "                   AT 2410.
+          CALL 'CABECALHO'.
+
+          *> TITULO DO PROGRAMA
+	        DISPLAY  "INCLUSAO DE LIVROS"           AT 1310.
+	        
+          *> CAMPOS
+          DISPLAY  "CODIGO:"                      AT 1502.
+          DISPLAY  "TITULO:"                      AT 1702.
+          DISPLAY  "AUTOR:"                       AT 1902.
+          DISPLAY  "CONFIRMA A INCLUSAO? (S/N):"  AT 2102.
+	        DISPLAY  "MENSAGEM: "                   AT 2302.
+          DISPLAY  "OUTRO REGISTRO? (S/N):"       AT 2502.
        
        RECEBER-DADOS.
+
            PERFORM LIMPAR-VARIAVEIS.
-           PERFORM WITH TEST AFTER UNTIL COD-PROD > 100 AND < 500
-               ACCEPT COD-ED  AT  1030
-               MOVE COD-ED  TO  COD-PROD
-               IF COD-PROD <= 100 OR >= 500
-                   DISPLAY "CODIGO DEVERA SER > 100 E < 500" AT 2421
+
+           *> CODIGO
+           PERFORM WITH TEST AFTER UNTIL COD-LIVRO > 100 AND < 500
+               ACCEPT COD-ED  AT  1511
+               MOVE COD-ED  TO  COD-LIVRO
+               IF COD-LIVRO <= 100 OR >= 500
+                   DISPLAY "CODIGO DEVERA SER > 100 E < 500" AT 2312
                ELSE
-                   DISPLAY W-BRANCO AT 2421
+                   PERFORM LIMPAR-ESPACO-MENSAGEM
                END-IF
            END-PERFORM.
 
-           PERFORM WITH TEST AFTER UNTIL DESCRI-PROD NOT = SPACES
-               ACCEPT DESCRI-PROD  AT  1230
-               IF  DESCRI-PROD = SPACES
-                  DISPLAY "DESCRICAO - CAMPO OBRIGATORIO" AT 2421
+           *> TITULO DE LIVRO
+           PERFORM WITH TEST AFTER UNTIL TITULO-LIVRO NOT = SPACES
+               ACCEPT TITULO-LIVRO  AT  1711
+               IF  TITULO-LIVRO = SPACES
+                  DISPLAY "O TITULO DO LIVRO E OBRIGATORIO" AT 2312
                ELSE
-                  DISPLAY W-BRANCO AT 2421
+                  PERFORM LIMPAR-ESPACO-MENSAGEM
                END-IF
            END-PERFORM.
            
-  	       PERFORM WITH TEST AFTER UNTIL PRECO-PROD > 0 AND <= 10000,00
-               ACCEPT PRECO-ED  AT  1430
-               MOVE PRECO-ED  TO  PRECO-PROD
-                  IF PRECO-PROD = 0 OR > 10000,00
-                    DISPLAY "PRECO UNIT. DEVERA SER > 0 E <= 10.000,00" AT 2421
-                  ELSE
-                    DISPLAY W-BRANCO AT 2421
-                 END-IF
+           *> AUTOR DO LIVRO
+  	       PERFORM WITH TEST AFTER UNTIL AUTOR-LIVRO NOT = SPACES
+               ACCEPT AUTOR-LIVRO  AT  1911
+               IF AUTOR-LIVRO = SPACES
+                  DISPLAY "O AUTOR DO LIVRO E OBRIGATORIO" AT 2312
+                ELSE
+                  PERFORM LIMPAR-ESPACO-MENSAGEM
+                END-IF
            END-PERFORM.
        
        GRAVAR-DADOS.
+
+           *> VALIDACAO DO CAMPO DE CONFIRMACAO
            PERFORM WITH TEST AFTER UNTIL W-INCLUI = "S" OR "N"
-              ACCEPT W-INCLUI AT  1845
+              ACCEPT W-INCLUI AT  2130
               IF W-INCLUI NOT = "S" AND "N"
-                  DISPLAY "DIGITAR S PARA GRAVAR E N PARA DESITIR" AT 2421
+                  DISPLAY "DIGITAR 'S' PARA GRAVAR E 'N' PARA DESITIR" AT 2312
               ELSE
-                  DISPLAY W-BRANCO AT 2421
+                  PERFORM LIMPAR-ESPACO-MENSAGEM
               END-IF
            END-PERFORM.
 
            IF  W-INCLUI = "S"  
-               *> GRAVANDO DADOS NO ARQUIVO  
-               WRITE REG-PROD  
+               WRITE REG-LIVRO  
                IF W-COD-ERRO NOT = "00"
-                  DISPLAY "REGISTRO DUPLICADO" AT 2421 WITH FOREGROUND-COLOR 4
+                  DISPLAY "REGISTRO DUPLICADO" AT 2312
                ELSE
                   DISPLAY " " AT 2421
                END-IF
            ELSE
-               DISPLAY "REGISTRO DESCARTADO" AT 2421
-               STOP "<ENTER>  PARA  CONTINUAR" 
-               DISPLAY W-BRANCO AT 2421
+               DISPLAY "REGISTRO DESCARTADO" AT 2312
+               STOP "PRESSIONE <ENTER> PARA CONTINUAR"
            END-IF.
        
        OPCAO-CONTINUIDADE.
-           DISPLAY "DESEJA INCLUIR OUTRO REGISTRO?(S/N):" AT 2220
+           
            PERFORM WITH TEST AFTER UNTIL W-OPCAO = "S" OR "N"
-               ACCEPT W-OPCAO AT  2265
+               ACCEPT W-OPCAO AT  2525
                IF W-OPCAO NOT = "S" AND "N"
-                  DISPLAY "DIGITAR S PARA INCLUIR OUTRO REGISTRO E N PARA TERMINAR" AT 2421
+                  DISPLAY "DIGITE 'S' PARA OUTRO REGISTRO 'N' PARA VOLTAR" AT 2312
                ELSE
-                  DISPLAY W-BRANCO AT 2421
+                  PERFORM LIMPAR-ESPACO-MENSAGEM
                END-IF
            END-PERFORM.
        
        LIMPAR-VARIAVEIS.
-           INITIALIZE REG-PROD.
-           MOVE ZEROS TO COD-ED PRECO-ED.
-           MOVE SPACES TO W-INCLUI  W-OPCAO.
+           INITIALIZE REG-LIVRO.
+           MOVE ZEROS TO COD-ED.
+           MOVE SPACES TO W-INCLUI W-OPCAO.
        
+       LIMPAR-ESPACO-MENSAGEM.
+           DISPLAY W-BRANCO AT 2312.
+
        FINALIZACAO.
-           CLOSE ARQ-PROD.
+           CLOSE ARQ-LIVRO.
            DISPLAY "TERMINO DO PROCESSAMENTO" AT 2421.
+
   		STOP " ".
       FIM.
