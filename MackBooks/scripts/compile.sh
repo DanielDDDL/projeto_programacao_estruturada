@@ -1,6 +1,9 @@
 # compila todos os modulos do sistema e joga o resultado para a pasta build
 cd ..
 
+echo "COMPILANDO PROGRAMA DO CABECALHO..."
+cobc -free -o    build/CABECALHO CABECALHO.cbl
+
 echo "COMPILANDO PROGRAMA DE INCLUSAO..."
 cobc -free -o    build/INCLUSAO INCLUSAO.cbl
 
