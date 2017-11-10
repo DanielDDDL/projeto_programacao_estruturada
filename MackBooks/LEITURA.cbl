@@ -25,10 +25,10 @@
          FD  ARQ-LIVRO
              LABEL  RECORD  STANDARD.
          01  REG-LIVRO.
-             02  COD-LIVRO         PIC  9(3).
-             02  TITULO-LIVRO          PIC  X(20).
-             02  AUTOR-LIVRO           PIC  9(4)V99.
-             02  FILLER          PIC  X(41).
+             02  COD-LIVRO    PIC 9(3).
+             02  TITULO-LIVRO PIC X(40).
+             02  AUTOR-LIVRO  PIC X(40).
+             02  FILLER       PIC X(41).
 
          WORKING-STORAGE SECTION.
          77  W-COD-ERRO              PIC  X(2)      VALUE SPACES.
@@ -52,6 +52,7 @@
 
        INICIALIZACAO.
            PERFORM ABRIR-ARQUIVO.
+           MOVE "S" TO OPC.
 
        PROCESSAMENTO.
 
@@ -99,9 +100,8 @@
            PERFORM WITH TEST AFTER UNTIL OPC-OK
                ACCEPT OPC AT 2125 WITH AUTO
                MOVE FUNCTION UPPER-CASE (OPC) TO OPC
-               IF  OPC-OK
-                   PERFORM LIMPAR-ESPACO-MENSAGEM
-               ELSE
+               PERFORM LIMPAR-ESPACO-MENSAGEM
+               IF  NOT OPC-OK
                    DISPLAY "DIGITE 'S' OU 'N'" AT 2512
                END-IF
            END-PERFORM.
@@ -111,11 +111,10 @@
            OPEN  I-O  ARQ-LIVRO.
 
        LIMPAR-ESPACO-MENSAGEM.
-           DISPLAY W-BRANCO AT 2312.
+           DISPLAY W-BRANCO AT 2512.
 
-       FINALIZACAO.
+       FINALIZACAO. 
            CLOSE  ARQ-LIVRO.
            DISPLAY "FIM DE PROCESSAMENTO" AT 2455.
-           STOP  " ".
 
        FIM-ULTIMA-LINHA.
