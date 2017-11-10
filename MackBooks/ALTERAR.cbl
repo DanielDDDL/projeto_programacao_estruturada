@@ -1,6 +1,6 @@
-IDENTIFICATION    DIVISION.
-       PROGRAM-ID.       ALTERAR   INITIAL.
-       AUTHOR.           DANIEL.
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ALTERAR.
+       AUTHOR. DANIEL.
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
             SPECIAL-NAMES.      
@@ -14,6 +14,7 @@ IDENTIFICATION    DIVISION.
                    RECORD KEY IS CODPROD
                    ACCESS RANDOM
                    FILE STATUS IS CODERRO.
+                   
        DATA DIVISION.
        FILE  SECTION.
        FD  CAD-PRODUTO
@@ -145,15 +146,8 @@ IDENTIFICATION    DIVISION.
            END-PERFORM.
        
        ABRIR-ARQUIVO.
+           *> SE ARQUIVO NAO FOR ENCONTRADO, UM NOVO SERA CRIADO 
            OPEN  I-O  CAD-PRODUTO.
-           IF  CODERRO NOT = "00"
-               DISPLAY "ARQUIVO NAO ENCONTRADO" AT 2040 WITH
-                       FOREGROUND-COLOR 4
-               STOP  " "
-               MOVE  "N"  TO  OPC
-           ELSE
-               DISPLAY "                       " AT 2040
-           END-IF.
 
        FINALIZACAO.
            CLOSE  CAD-PRODUTO.

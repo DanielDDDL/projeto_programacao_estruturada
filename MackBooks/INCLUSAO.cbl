@@ -29,19 +29,20 @@
              02  DESCRI-PROD PIC X(20).
              02  PRECO-PROD  PIC 9(4)V99.
              02  FILLER      PIC X(41).
-       
-       WORKING-STORAGE SECTION.
-       01  W-COD-ERRO          PIC XX           VALUE ALL "=".
-       01  W-OPCAO             PIC X            VALUE SPACE.
-       01  W-INCLUI            PIC X            VALUE SPACE.
-       01  W-BRANCO            PIC X(50)        VALUE SPACE.
-       01	 MASCARAS.
-            02   COD-ED	       PIC ZZ9          VALUE ZEROS.
-            02   PRECO-ED      PIC  ZZ.ZZ9,99   VALUE ZEROS.
 
-      SCREEN SECTION.
+       
+         WORKING-STORAGE SECTION.
+         01  W-COD-ERRO     PIC XX VALUE ALL "=".
+         01  W-OPCAO        PIC X VALUE SPACE.
+         01  W-INCLUI       PIC X VALUE SPACE.
+         01  W-BRANCO       PIC X(50) VALUE SPACE.
+         01	 MASCARAS.
+              02   COD-ED	  PIC ZZ9 VALUE ZEROS.
+              02   PRECO-ED PIC  ZZ.ZZ9,99 VALUE ZEROS.
+
+        SCREEN SECTION.
         01 CLEAR-SCREEN.
-             05 BLANK SCREEN BACKGROUND-COLOR 0 FOREGROUND-COLOR 0.
+               05 BLANK SCREEN BACKGROUND-COLOR 0 FOREGROUND-COLOR 0.
 
        PROCEDURE   DIVISION.
        
@@ -66,19 +67,13 @@
           *> LIMPANDO TELA
           DISPLAY CLEAR-SCREEN.
 
-          IF W-COD-ERRO = 5
-              DISPLAY "ERROR! EM ALGUM LUGAR" AT 0505
-           ELSE
-              DISPLAY "NAO DEU ERRO" AT 0505
-           END-IF.
-
           *> TEXTFIELDS 
-	        DISPLAY  "INCLUSAO DE PRODUTOS"  AT 0520.
-	        DISPLAY  "CODIGO:"   AT  1010.
-          DISPLAY  "DESCRICAO:"   AT  1210.
-          DISPLAY  "PRECO UNIT.:"   AT  1410.
-          DISPLAY  "CONFIRMA A INCLUSAO?(S/N):"   AT  1810.
-	        DISPLAY  "MENSAGEM: "   AT  2410.
+	        DISPLAY  "INCLUSAO DE PRODUTOS"         AT 0520.
+	        DISPLAY  "CODIGO:"                      AT 1010.
+          DISPLAY  "DESCRICAO:"                   AT 1210.
+          DISPLAY  "PRECO UNIT.:"                 AT 1410.
+          DISPLAY  "CONFIRMA A INCLUSAO?(S/N):"   AT 1810.
+	        DISPLAY  "MENSAGEM: "                   AT 2410.
        
        RECEBER-DADOS.
            PERFORM LIMPAR-VARIAVEIS.
