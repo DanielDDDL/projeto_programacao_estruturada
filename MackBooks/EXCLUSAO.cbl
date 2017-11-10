@@ -3,14 +3,17 @@ IDENTIFICATION    DIVISION.
        AUTHOR.           DANIEL.
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
-       SPECIAL-NAMES. DECIMAL-POINT IS COMMA.
-       INPUT-OUTPUT  SECTION.
-       FILE-CONTROL.
-           SELECT  CAD-PRODUTO ASSIGN TO "C:\TEMP\LIVROS.DAT"
-                ORGANIZATION   INDEXED
-                RECORD KEY  CODPROD
-                ACCESS  RANDOM
-                FILE  STATUS  CODERRO.
+            SPECIAL-NAMES.      
+                 DECIMAL-POINT IS COMMA.
+
+             INPUT-OUTPUT SECTION.
+               FILE-CONTROL.
+                   SELECT OPTIONAL CAD-PRODUTO
+                   ASSIGN TO "livros.dat"
+                   ORGANIZATION INDEXED
+                   RECORD KEY IS CODPROD
+                   ACCESS RANDOM
+                   FILE STATUS IS CODERRO.
        DATA DIVISION.
        FILE  SECTION.
        FD  CAD-PRODUTO
@@ -67,35 +70,35 @@ IDENTIFICATION    DIVISION.
            MOVE ZEROS TO CODPROD-ED   PRECO-ED.
            MOVE CORR DATA-SIS TO DATA-DIA.
            DISPLAY  CLEAR-SCREEN.
-	         DISPLAY  "EXCLUSAO DE CADASTRO DE PRODUTOS"  AT 0515.
-           DISPLAY   DATA-DIA  AT  0722.
-	         DISPLAY  "CODIGO:"   AT  1010.
-           DISPLAY  "DESCRICAO:"   AT  1210.
-           DISPLAY  "PRECO UNIT.:"   AT  1410.
-           DISPLAY  "OUTRO REGISTRO?(S/N): " AT  2010.
+	         DISPLAY  "EXCLUSAO DE CADASTRO DE PRODUTOS" AT 0515.
+           DISPLAY   DATA-DIA AT 0722.
+	         DISPLAY  "CODIGO:" AT 1010.
+           DISPLAY  "DESCRICAO:" AT 1210.
+           DISPLAY  "PRECO UNIT.:" AT 1410.
+           DISPLAY  "OUTRO REGISTRO?(S/N):" AT 2010.
 
        ROTINA-LEITURA.
       
-           DISPLAY  "DIGITE O CODIGO DO PRODUTO A EXLUIR"  AT 0910
+           DISPLAY  "DIGITE O CODIGO DO PRODUTO A EXLUIR" AT 0910
            ACCEPT CODPROD-ED  AT 1022.
            MOVE CODPROD-ED  TO  CODPROD    
            READ CAD-PRODUTO
            IF  CODERRO NOT = "00"
                DISPLAY "PRODUTO NAO FOI ENCONTRADO" AT 1040 WITH BLINK
            ELSE
-               DISPLAY  DESCRI  AT 1222
+               DISPLAY DESCRI AT 1222
                MOVE  PRECO   TO   PRECO-ED
                DISPLAY  PRECO-ED   AT  1422
            END-IF.
        ROTINA-DELECAO.
             IF  CODERRO = "00"
-                DISPLAY  "CONFIRMA A EXCLUSAO?(S/N): "  AT  1810
+                DISPLAY  "CONFIRMA A EXCLUSAO?(S/N):"  AT  1810
                 ACCEPT   OPC-EXCL AT 1840
 		            IF  OPC-EXCL  =  "S"
   			           DELETE  CAD-PRODUTO      
                 ELSE
 			             DISPLAY  "EXCLUSAO NAO EFETIVADA"  AT 1844
-                   STOP  "    <ENTER> PARA CONTINUAR"
+                   STOP  "<ENTER> PARA CONTINUAR"
                 END-IF
              ELSE
                 NEXT  SENTENCE
@@ -106,7 +109,7 @@ IDENTIFICATION    DIVISION.
                ACCEPT OPC  AT  2035 WITH AUTO
                MOVE FUNCTION UPPER-CASE (OPC) TO OPC
                IF  OPC-OK
-                   DISPLAY "                   " AT 2040
+                   DISPLAY " " AT 2040
                ELSE
                    DISPLAY " DIGITE S OU N" AT 2040
                END-IF
@@ -115,16 +118,16 @@ IDENTIFICATION    DIVISION.
        ABRIR-ARQUIVO.
            OPEN  I-O  CAD-PRODUTO.
            IF  CODERRO NOT = "00"
-               DISPLAY "ARQUIVO NAO ENCONTRADO" AT 2040 WITH
-                       FOREGROUND-COLOR 4
+               DISPLAY "ARQUIVO NAO ENCONTRADO" AT 2040 WITH FOREGROUND-COLOR 4
                STOP  " "
-               MOVE  "N"  TO  OPC
+               MOVE "N" TO OPC
            ELSE
-               DISPLAY "                       " AT 2040
+               DISPLAY " " AT 2040
            END-IF.
+
        FINALIZACAO.
            CLOSE  CAD-PRODUTO
            DISPLAY "FIM DE PROCESSAMENTO" AT 2455.
-           STOP  "  ".
+           STOP  " ".
 
        FIM-ULTIMA-LINHA.

@@ -1,3 +1,4 @@
+       
        IDENTIFICATION DIVISION.
        
        PROGRAM-ID. MENU_INICIAL INITIAL.
@@ -28,20 +29,20 @@
        77 LINHA  PIC X(32) VALUE ALL '='.                       
 
        SCREEN SECTION.
-        01 CLEAR-SCREEN.
+          01 CLEAR-SCREEN.
              05 BLANK SCREEN BACKGROUND-COLOR 0 FOREGROUND-COLOR 0.
 
        PROCEDURE DIVISION.
             
-           PERFORM CABECALHO.
-       
+           PERFORM INICIO.
            PERFORM MENUPRINCIPAL UNTIL OPC = 9.
            STOP " ".
-           STOP RUN.
+           STOP RUN.           
        
-        INICIO.
+       INICIO.
           DISPLAY CLEAR-SCREEN.
-
+          PERFORM CABECALHO.
+          PERFORM DISPLAY-MENU-PRINCIPAL.
 
        CABECALHO.
        
@@ -55,21 +56,24 @@
            MOVE MES-SIST TO MES.
            MOVE DIA-SIST TO DIA.
        
+           *> INFORMACOES DE CABECALHO
            DISPLAY "BOOK'S CORP" AT 0503.
            DISPLAY DATA-DIA AT 0523.
            DISPLAY "MACKBOOKS" AT 0714.
            DISPLAY "DEVS: DANIEL, RONIFER E HENRIQUE " AT 0902.
        
-       MENUPRINCIPAL.
-          
-           MOVE ZEROS TO OPC.
-           
-   	       DISPLAY "(1)  ADICIONAR LIVRO" AT 1307.     
-   	       DISPLAY "(2)  REMOVER LIVRO"   AT 1507.    
-   	       DISPLAY "(3)  ALTERAR LIVRO"   AT 1707.
+       DISPLAY-MENU-PRINCIPAL.
+           DISPLAY "(1)  ADICIONAR LIVRO" AT 1307.     
+           DISPLAY "(2)  REMOVER LIVRO"   AT 1507.    
+           DISPLAY "(3)  ALTERAR LIVRO"   AT 1707.
            DISPLAY "(4)  CONSULTAR LIVRO" AT 1907.
            DISPLAY "(9)  ENCERRAR"        AT 2107.                      
-   	       DISPLAY "ESCOLHA A OPCAO:"     AT 2307.
+           DISPLAY "ESCOLHA A OPCAO:"     AT 2307.
+
+       MENUPRINCIPAL.
+
+           PERFORM INICIO.   
+           MOVE ZEROS TO OPC.
            
            PERFORM WITH TEST AFTER UNTIL OPC-VALIDA
                ACCEPT OPC AT 2325

@@ -1,16 +1,25 @@
-IDENTIFICATION    DIVISION.
-       PROGRAM-ID.       LEITURA.
-       AUTHOR.           DANIEL.
+
+       IDENTIFICATION DIVISION.
+       
+       PROGRAM-ID. LEITURA.
+       AUTHOR. DANIEL.
+       DATE-WRITTEN. 06/11/2017.
+
        ENVIRONMENT DIVISION.
-       CONFIGURATION SECTION.
-       SPECIAL-NAMES. DECIMAL-POINT IS COMMA.
-       INPUT-OUTPUT  SECTION.
-       FILE-CONTROL.
-           SELECT  CAD-PRODUTO ASSIGN TO "C:\TEMP\LIVROS.DAT"
-                ORGANIZATION   INDEXED
-                RECORD KEY  CODPROD
-                ACCESS  RANDOM
-                FILE  STATUS  CODERRO.
+         CONFIGURATION SECTION.
+
+             SPECIAL-NAMES.      
+                 DECIMAL-POINT IS COMMA.
+
+             INPUT-OUTPUT SECTION.
+               FILE-CONTROL.
+                   SELECT OPTIONAL CAD-PRODUTO
+                   ASSIGN TO "livros.dat"
+                   ORGANIZATION INDEXED
+                   RECORD KEY IS CODPROD
+                   ACCESS RANDOM
+                   FILE STATUS IS CODERRO.
+
        DATA DIVISION.
        FILE  SECTION.
        FD  CAD-PRODUTO
