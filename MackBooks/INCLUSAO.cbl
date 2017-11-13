@@ -32,12 +32,12 @@
 
        
          WORKING-STORAGE SECTION.
-         01  W-COD-ERRO     PIC XX         VALUE SPACES.
-         01  W-OPCAO        PIC X          VALUE SPACES.
-         01  W-INCLUI       PIC X          VALUE SPACES.
-         01  W-BRANCO       PIC X(50)      VALUE SPACES.
-         01	 MASCARAS.
-              02   COD-ED	  PIC ZZ9        VALUE ZEROS.
+         77  W-COD-ERRO     PIC XX         VALUE SPACES.
+         77  W-OPCAO        PIC X          VALUE SPACES.
+             88 OPC-OK                     VALUE "S" "N".
+         77  W-INCLUI       PIC X          VALUE SPACES.
+         77  W-BRANCO       PIC X(50)      VALUE SPACES.
+         77  COD-ED	        PIC ZZ9        VALUE ZEROS.
 
         SCREEN SECTION.
         01 CLEAR-SCREEN.
@@ -141,7 +141,7 @@
        OPCAO-CONTINUIDADE.
            
            *> VALIDACAO DA OPCAO DE CONTINUEDADE
-           PERFORM WITH TEST AFTER UNTIL W-OPCAO = "S" OR "N"
+           PERFORM WITH TEST AFTER UNTIL OPC-OK
                ACCEPT W-OPCAO AT 2525
                MOVE FUNCTION UPPER-CASE (W-OPCAO) TO W-OPCAO
                IF W-OPCAO NOT = "S" AND "N"

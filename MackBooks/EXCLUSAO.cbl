@@ -78,7 +78,7 @@
            DISPLAY "TITULO:"                      AT 1702.
            DISPLAY "AUTOR:"                       AT 1902.
            DISPLAY "CONFIRMAR EXCLUSAO? (S/N): "  AT 2102.
-           DISPLAY "OUTRO REGISTRO? (S/N): "      AT 2302.
+           DISPLAY "OUTRA EXCLUSAO? (S/N): "      AT 2302.
            DISPLAY "MENSAGEM:"                    AT 2502.
 
        ROTINA-LEITURA.
