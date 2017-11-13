@@ -62,21 +62,7 @@
            PERFORM RECEBER-OPCAO-CONTINUIDADE.
 
        FORMATAR-TELA.
-           MOVE ZEROS TO COD-LIVRO-ED.
-
-           *> LIMPANDO TELA
-           DISPLAY CLEAR-SCREEN.
-
-           CALL "CABECALHO"
-
-	         DISPLAY "EXCLUSAO DE CADASTRO DE PRODUTOS" AT 0515.
-	         DISPLAY "CODIGO:" AT 1010.
-           DISPLAY "TITULO-LIVROCAO:" AT 1210.
-           DISPLAY "AUTOR-LIVRO UNIT.:" AT 1410.
-           DISPLAY "OUTRO REGISTRO?(S/N):" AT 2010.
-
-
-
+           
            MOVE ZEROS TO COD-LIVRO-ED.
 
            *> LIMPANDO TELA
@@ -85,15 +71,15 @@
            CALL "CABECALHO".
 
            *> TITULO DO PROGRAMA
-           DISPLAY "LEITURA DE LIVROS" AT 1311.
+           DISPLAY "EXCLUSAO DE LIVROS" AT 1311.
 
            *> CAMPOS
-           DISPLAY "CODIGO:"                   AT 1502.
-           DISPLAY "TITULO:"                   AT 1702.
-           DISPLAY "AUTOR:"                    AT 1902.
-           DISPLAY "CONFIRMAR REMOCAO? (S/N): " AT 2102.
-           DISPLAY "OUTRO REGISTRO? (S/N): "   AT 2302.
-           DISPLAY "MENSAGEM:"                 AT 2502.
+           DISPLAY "CODIGO:"                      AT 1502.
+           DISPLAY "TITULO:"                      AT 1702.
+           DISPLAY "AUTOR:"                       AT 1902.
+           DISPLAY "CONFIRMAR ALTERACAO? (S/N): " AT 2102.
+           DISPLAY "OUTRO REGISTRO? (S/N): "      AT 2302.
+           DISPLAY "MENSAGEM:"                    AT 2502.
 
        ROTINA-LEITURA.
           ACCEPT COD-LIVRO-ED AT 1511.
@@ -131,12 +117,11 @@
        
        ABRIR-ARQUIVO.
            *> SE ARQUIVO NAO FOR ENCONTRADO, UM NOVO SERA CRIADO
-           OPEN  I-O  CAD-PRODUTO.
+           OPEN I-O CAD-PRODUTO.
 
        FINALIZACAO.
-           CLOSE  CAD-PRODUTO
-           DISPLAY "FIM DE PROCESSAMENTO" AT 2455.
-           STOP  " ".
+           CLOSE CAD-PRODUTO
+           STOP " ".
 
        LIMPAR-ESPACO-MENSAGEM.
           DISPLAY W-BRANCO AT 2512.

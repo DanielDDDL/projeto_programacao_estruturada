@@ -11,7 +11,7 @@
                    SELECT OPTIONAL CAD-PRODUTO
                    ASSIGN TO "livros.dat"
                    ORGANIZATION INDEXED
-                   RECORD KEY IS CODPROD
+                   RECORD KEY IS COD-LIVRO
                    ACCESS RANDOM
                    FILE STATUS IS CODERRO.
                    
@@ -20,138 +20,126 @@
        FD  CAD-PRODUTO
            LABEL  RECORD  STANDARD.
        01  REG-PRODUTO.
-           02  CODPROD         PIC  9(3).
-           02  DESCRI          PIC  X(20).
-           02  PRECO           PIC  9(4)V99.
-           02  FILLER          PIC  X(41).
+           02  COD-LIVRO     PIC  9(3).
+           02  TITULO-LIVRO  PIC  X(40).
+           02  AUTOR-LIVRO   PIC  X(40).
+           02  FILLER        PIC  X(41).
+
        WORKING-STORAGE SECTION.
-       77  CODERRO   PIC  X(2)  VALUE SPACES.
-       77  OPC  PIC X VALUE SPACE.
-       88  OPC-OK  VALUE "S" "N".
-       77  W-CODPROD-PESQUISA   PIC 9(3) VALUE ZEROS.
-       77  CODPROD-ED     PIC   ZZ9      VALUE ZEROS.
-       77  OPC-ALT        PIC   X  VALUE SPACE.
-       77  PRECO-ED       PIC   Z.ZZ9,99 VALUE ZEROS.
-	
-       01  DATA-SIS.
-           02  ANO  PIC  9999.
-           02  MES  PIC  99.
-           02  DIA  PIC  99.
-       01  DATA-DIA.
-           02  DIA  PIC  99/.
-           02  MES  PIC  99/.
-           02  ANO  PIC  9999.
-       01  DATA-COM-BARRA  REDEFINES  DATA-DIA  PIC X(10).
+       77  CODERRO             PIC X(2)  VALUE SPACES.
+       77  OPC                 PIC X     VALUE SPACE.
+           88  OPC-OK                    VALUE "S" "N".
+       77  W-CODLIVRO-PESQUISA PIC 9(3)  VALUE ZEROS.
+       77  COD-LIVRO-ED        PIC ZZ9   VALUE ZEROS.
+       77  OPC-ALT             PIC X     VALUE SPACE.
+       77  W-BRANCO            PIC X(50) VALUE SPACES.
 
        SCREEN SECTION.
           01 CLEAR-SCREEN.
              05 BLANK SCREEN BACKGROUND-COLOR 0 FOREGROUND-COLOR 0.
 
-       
        PROCEDURE DIVISION.
 
        INICIO.
-           PERFORM   INICIALIZACAO.
-           PERFORM   PROCESSAMENTO UNTIL OPC = "N".
-           PERFORM   FINALIZACAO.
+           PERFORM INICIALIZACAO.
+           PERFORM PROCESSAMENTO UNTIL OPC = "N".
+           PERFORM FINALIZACAO.
            EXIT PROGRAM.
 
        INICIALIZACAO.
-           INITIALIZE DATA-SIS.
-           ACCEPT  DATA-SIS FROM DATE YYYYMMDD.
+           MOVE "S" TO OPC.
            PERFORM ABRIR-ARQUIVO.
            
        PROCESSAMENTO.
-           PERFORM  FORMATAR-TELA.
-           PERFORM  ROTINA-LEITURA
-           PERFORM  ROTINA-ALTERACAO.
-           PERFORM  RECEBER-OPCAO-CONTINUIDADE.
+           PERFORM FORMATAR-TELA.
+           PERFORM ROTINA-LEITURA.
+           PERFORM EXIBIR-DADOS-LIDOS.
+           PERFORM ROTINA-ALTERACAO.
+           PERFORM RECEBER-OPCAO-CONTINUIDADE.
 
        FORMATAR-TELA.
-           INITIALIZE DATA-DIA CODERRO REG-PRODUTO W-CODPROD-PESQUISA.
-           MOVE ZEROS TO CODPROD-ED   PRECO-ED.
-           MOVE CORR DATA-SIS TO DATA-DIA.
-           DISPLAY  CLEAR-SCREEN.
-	         DISPLAY  "ALTERACAO DE CADASTRO DE PRODUTOS"  AT 0515.
-           DISPLAY   DATA-DIA  AT  0722.
-	         DISPLAY  "CODIGO:"   AT  1010.
-           DISPLAY  "DESCRICAO:"   AT  1210.
-           DISPLAY  "PRECO UNIT.:"   AT  1410.
-           DISPLAY  "OUTRO REGISTRO?(S/N): " AT  2010.
+
+           MOVE ZEROS TO COD-LIVRO-ED.
+
+           *> LIMPANDO TELA
+           DISPLAY CLEAR-SCREEN.
+
+           CALL "CABECALHO"
+
+           *> CAMPOS
+           DISPLAY "CODIGO:"                      AT 1502.
+           DISPLAY "TITULO:"                      AT 1702.
+           DISPLAY "AUTOR:"                       AT 1902.
+           DISPLAY "CONFIRMAR ALTERACAO? (S/N): " AT 2102.
+           DISPLAY "OUTRO REGISTRO? (S/N): "      AT 2302.
+           DISPLAY "MENSAGEM:"                    AT 2502.
 
        ROTINA-LEITURA.
-           DISPLAY  "DIGITE O CODIGO DO PRODUTO A ALTERAR"  AT 0910
-           ACCEPT CODPROD-ED  AT 1022.
-           MOVE CODPROD-ED  TO  CODPROD    
-           READ CAD-PRODUTO
+           ACCEPT COD-LIVRO-ED AT 1511.
+           MOVE COD-LIVRO-ED TO COD-LIVRO.    
+           READ CAD-PRODUTO.
+           
+       EXIBIR-DADOS-LIDOS.
            IF  CODERRO NOT = "00"
-               DISPLAY "PRODUTO NAO FOI ENCONTRADO" AT 1040 WITH BLINK
+              DISPLAY "LIVRO NAO ENCONTRADO" AT 2512
            ELSE
-               DISPLAY  DESCRI  AT 1222
-               MOVE  PRECO   TO   PRECO-ED
-               DISPLAY  PRECO-ED   AT  1422
+              DISPLAY TITULO-LIVRO AT 1711
+              DISPLAY AUTOR-LIVRO AT 1911
            END-IF.
 
        ROTINA-ALTERACAO.
             IF  CODERRO = "00"
-                PERFORM   RECEBER-NOVA-DESCRICAO
-                PERFORM   RECEBER-NOVO-PRECO
-		   MOVE     PRECO-ED  TO  PRECO
-                DISPLAY  "CONFIRMA A ALTERACAO?(S/N): "  AT  1810
-                ACCEPT   OPC-ALT AT 1840
-		   IF  OPC-ALT  =  "S"
-  			REWRITE  REG-PRODUTO      *> Regrava o registro alterado
+                PERFORM RECEBER-NOVA-TITULO-LIVRO
+                PERFORM RECEBER-NOVO-AUTOR-LIVRO
+                ACCEPT OPC-ALT AT 2130
+		            IF OPC-ALT = "S"
+  			           REWRITE  REG-PRODUTO
+                   DISPLAY "ALTERACAO REALIZADA COM SUCESSO"AT 2512
                 ELSE
-			DISPLAY  "ALTERACAO NAO EFETIVADA"  AT 1844
-                   STOP  "   <ENTER> PARA CONTINUAR"
+			             DISPLAY "ALTERACAO NAO EFETIVADA" AT 2512
                 END-IF
-             ELSE
-                NEXT  SENTENCE
              END-IF.
       
-       RECEBER-NOVA-DESCRICAO.
-           PERFORM WITH TEST AFTER UNTIL     *> VALIDA DESCRI-PROD
-                   DESCRI NOT = SPACES
-               ACCEPT DESCRI  AT  1222
-               IF  DESCRI = SPACES
-                   DISPLAY "DESCRICAO - CAMPO OBRIGATORIO    " AT 1232
+       RECEBER-NOVA-TITULO-LIVRO.
+           PERFORM WITH TEST AFTER UNTIL TITULO-LIVRO NOT = SPACES
+               ACCEPT TITULO-LIVRO  AT  1711
+               IF  TITULO-LIVRO = SPACES
+                   DISPLAY "O TITULO DO LIVRO E OBRIGATORIO" AT 2312
                ELSE
-                   DISPLAY "                                 " AT 1232
+                   PERFORM LIMPAR-ESPACO-MENSAGEM
                END-IF
            END-PERFORM.
 
-      RECEBER-NOVO-PRECO.      
-	       PERFORM WITH TEST AFTER UNTIL    *> VALIDA PRECO-PROD
-                   PRECO > 0 AND <= 10000,00
-               ACCEPT PRECO-ED  AT  1422
-               MOVE   PRECO-ED  TO  PRECO
-               IF  PRECO = 0 OR > 10000,00
-                   DISPLAY "PRECO UNIT. DEVERA SER > 0 E <= 10.000,00"
-                           AT 1432
+      RECEBER-NOVO-AUTOR-LIVRO.      
+	       PERFORM WITH TEST AFTER UNTIL AUTOR-LIVRO NOT = SPACES
+               ACCEPT AUTOR-LIVRO AT 1911
+               IF AUTOR-LIVRO = SPACES
+                   DISPLAY "O AUTOR DO LIVRO E OBRIGATORIO" AT 2312
                ELSE
-                   DISPLAY "                                         "
-                           AT 1432
+                   PERFORM LIMPAR-ESPACO-MENSAGEM
                END-IF
            END-PERFORM.
 
        RECEBER-OPCAO-CONTINUIDADE.
            PERFORM WITH TEST AFTER UNTIL OPC-OK
-               ACCEPT OPC  AT  2035 WITH AUTO
+               ACCEPT OPC AT 2325 WITH AUTO
                MOVE FUNCTION UPPER-CASE (OPC) TO OPC
-               IF  OPC-OK
-                   DISPLAY "                   " AT 2040
+               IF NOT OPC-OK
+                   DISPLAY "DIGITE 'S' PARA OUTRO REGISTRO 'N' PARA VOLTAR" AT 2312
                ELSE
-                   DISPLAY " DIGITE S OU N" AT 2040
+                   PERFORM LIMPAR-ESPACO-MENSAGEM
                END-IF
            END-PERFORM.
        
        ABRIR-ARQUIVO.
            *> SE ARQUIVO NAO FOR ENCONTRADO, UM NOVO SERA CRIADO 
-           OPEN  I-O  CAD-PRODUTO.
+           OPEN I-O CAD-PRODUTO.
 
        FINALIZACAO.
-           CLOSE  CAD-PRODUTO.
-           DISPLAY "FIM DE PROCESSAMENTO" AT 2455.
-           STOP  "  ".
+           CLOSE CAD-PRODUTO.
+           STOP "  ".
+
+       LIMPAR-ESPACO-MENSAGEM.
+          DISPLAY W-BRANCO AT 2512.
            
        FIM-ULTIMA-LINHA.
