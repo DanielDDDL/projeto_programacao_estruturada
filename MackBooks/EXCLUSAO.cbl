@@ -71,13 +71,13 @@
            CALL "CABECALHO".
 
            *> TITULO DO PROGRAMA
-           DISPLAY "EXCLUSAO DE LIVROS" AT 1311.
+           DISPLAY "EXCLUSAO DE LIVROS" AT 1309.
 
            *> CAMPOS
            DISPLAY "CODIGO:"                      AT 1502.
            DISPLAY "TITULO:"                      AT 1702.
            DISPLAY "AUTOR:"                       AT 1902.
-           DISPLAY "CONFIRMAR ALTERACAO? (S/N): " AT 2102.
+           DISPLAY "CONFIRMAR EXCLUSAO? (S/N): "  AT 2102.
            DISPLAY "OUTRO REGISTRO? (S/N): "      AT 2302.
            DISPLAY "MENSAGEM:"                    AT 2502.
 
@@ -96,10 +96,11 @@
                  
        ROTINA-DELECAO.
             IF  CODERRO = "00"
-                ACCEPT   OPC-EXCL AT 2129
+                ACCEPT OPC-EXCL AT 2129 WITH AUTO
+                MOVE FUNCTION UPPER-CASE (OPC-EXCL) TO OPC-EXCL
 		            IF  OPC-EXCL  =  "S"
   			           DELETE  CAD-PRODUTO      
-                   DISPLAY "EXCLUSIVA REALIZADA COM SUCESSO" AT 2512
+                   DISPLAY "EXCUSAO REALIZADA COM SUCESSO" AT 2512
                 ELSE
 			             DISPLAY "EXCLUSAO NAO EFETIVADA" AT 2512
                 END-IF

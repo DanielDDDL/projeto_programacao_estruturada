@@ -118,7 +118,8 @@
 
            *> VALIDACAO DO CAMPO DE CONFIRMACAO
            PERFORM WITH TEST AFTER UNTIL W-INCLUI = "S" OR "N"
-              ACCEPT W-INCLUI AT  2130
+              ACCEPT W-INCLUI AT  2130 WITH AUTO
+              MOVE FUNCTION UPPER-CASE (W-INCLUI) TO W-INCLUI
               IF W-INCLUI NOT = "S" AND "N"
                   DISPLAY "DIGITAR 'S' PARA GRAVAR E 'N' PARA DESITIR" AT 2312
               ELSE
@@ -131,17 +132,18 @@
                IF W-COD-ERRO NOT = "00"
                   DISPLAY "REGISTRO DUPLICADO" AT 2312
                ELSE
-                  DISPLAY " " AT 2421
+                  PERFORM LIMPAR-ESPACO-MENSAGEM
                END-IF
            ELSE
                DISPLAY "REGISTRO DESCARTADO" AT 2312
-               STOP "PRESSIONE <ENTER> PARA CONTINUAR"
            END-IF.
        
        OPCAO-CONTINUIDADE.
            
+           *> VALIDACAO DA OPCAO DE CONTINUEDADE
            PERFORM WITH TEST AFTER UNTIL W-OPCAO = "S" OR "N"
-               ACCEPT W-OPCAO AT  2525
+               ACCEPT W-OPCAO AT 2525
+               MOVE FUNCTION UPPER-CASE (W-OPCAO) TO W-OPCAO
                IF W-OPCAO NOT = "S" AND "N"
                   DISPLAY "DIGITE 'S' PARA OUTRO REGISTRO 'N' PARA VOLTAR" AT 2312
                ELSE
@@ -160,6 +162,3 @@
        FINALIZACAO.
            CLOSE ARQ-LIVRO.
            DISPLAY "TERMINO DO PROCESSAMENTO" AT 2421.
-
-  		STOP " ".
-      FIM.

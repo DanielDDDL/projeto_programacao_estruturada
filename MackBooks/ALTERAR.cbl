@@ -66,6 +66,8 @@
 
            CALL "CABECALHO"
 
+           DISPLAY "ALTERACAO DE LIVROS" AT 1309.
+
            *> CAMPOS
            DISPLAY "CODIGO:"                      AT 1502.
            DISPLAY "TITULO:"                      AT 1702.
@@ -91,7 +93,9 @@
             IF  CODERRO = "00"
                 PERFORM RECEBER-NOVA-TITULO-LIVRO
                 PERFORM RECEBER-NOVO-AUTOR-LIVRO
-                ACCEPT OPC-ALT AT 2130
+                ACCEPT OPC-ALT AT 2130 WITH AUTO
+                MOVE FUNCTION UPPER-CASE (OPC-ALT) TO OPC-ALT
+
 		            IF OPC-ALT = "S"
   			           REWRITE  REG-PRODUTO
                    DISPLAY "ALTERACAO REALIZADA COM SUCESSO"AT 2512
