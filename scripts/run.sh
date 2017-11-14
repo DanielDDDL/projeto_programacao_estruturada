@@ -1,15 +1,15 @@
-# executa o main do programa 
+# checa se a pasta de build for criada
+# executa menu principal caso tenha sido
+
 cd ..
 
-if [ ! -d build ]; then
-  echo "Diretorio de compilacao nao encontrado. Por favor, execute o comando './compile' para que ele seja criado."
-else
+if [ -d build ]; then
 	cd build/
-
 	./MENU_INICIAL
 
-	cd ..
+	cd..
 	cd scripts/
+else
+	echo "Diretório de execução não encontrado. Tente primeiro compilar o programa."
 fi
-
 
