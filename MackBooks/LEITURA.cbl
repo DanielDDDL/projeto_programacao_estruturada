@@ -19,8 +19,7 @@
 
        DATA DIVISION.
            FILE  SECTION.
-           FD  ARQ-LIVRO
-               LABEL  RECORD  STANDARD.
+           FD ARQ-LIVRO.
            01 REG-LIVRO.
                02 COD-LIVRO    PIC 9(3).
                02 TITULO-LIVRO PIC X(40).
@@ -28,12 +27,12 @@
                02 FILLER       PIC X(41).
 
            WORKING-STORAGE SECTION.
-           77 W-COD-ERRO           PIC  X(2)      VALUE SPACES.
-           77 OPC                  PIC X          VALUE SPACE.
-              88 OPC-OK                           VALUE "S" "N".
-           77 W-COD-LIVRO-PESQUISA PIC 9(3)       VALUE ZEROS.
-           77 COD-LIVRO-ED         PIC ZZ9        VALUE ZEROS.
-           77 W-BRANCO             PIC X(50)      VALUE SPACES.
+           77 W-COD-ERRO           PIC  X(2) VALUE SPACES.
+           77 OPC                  PIC X     VALUE SPACE.
+              88 OPC-OK                      VALUE "S" "N".
+           77 W-COD-LIVRO-PESQUISA PIC 9(3)  VALUE ZEROS.
+           77 COD-LIVRO-ED         PIC ZZ9   VALUE ZEROS.
+           77 W-BRANCO             PIC X(50) VALUE SPACES.
 
            SCREEN SECTION.
            01 CLEAR-SCREEN.

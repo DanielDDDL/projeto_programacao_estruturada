@@ -9,19 +9,18 @@
                  DECIMAL-POINT IS COMMA.
 
              INPUT-OUTPUT SECTION.
-               FILE-CONTROL.
-                   SELECT OPTIONAL CAD-PRODUTO
-                   ASSIGN TO "livros.dat"
-                   ORGANIZATION INDEXED
-                   RECORD KEY IS COD-LIVRO
-                   ACCESS RANDOM
-                   FILE STATUS IS CODERRO.
+                 FILE-CONTROL.
+                     SELECT OPTIONAL CAD-PRODUTO
+                     ASSIGN TO "livros.dat"
+                     ORGANIZATION INDEXED
+                     RECORD KEY IS COD-LIVRO
+                     ACCESS RANDOM
+                     FILE STATUS IS CODERRO.
 
        DATA DIVISION.
 
            FILE SECTION.
-           FD CAD-PRODUTO
-               LABEL  RECORD  STANDARD.
+           FD CAD-PRODUTO.
            01 REG-LIVRO.
               02 COD-LIVRO     PIC 9(3).
               02 TITULO-LIVRO  PIC X(40).
