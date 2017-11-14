@@ -1,0 +1,12 @@
+**/bin
+*.h
+*.o
+*.c
+*.c.h
+*.c.l.h
+*.~lock*
+*.swp
+*.so
+*.data
+MackBooks/scripts/*
+MackBooks/build/*
